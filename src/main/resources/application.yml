@@ -1,0 +1,24 @@
+spring:
+  devtools:
+    remote:
+      restart:
+        enabled: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/personal_db?serverTimezone=Asia/Seoul
+    username: root
+    password: 12345
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: create
+
+  logging.level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
