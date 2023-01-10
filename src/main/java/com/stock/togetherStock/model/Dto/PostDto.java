@@ -2,6 +2,7 @@ package com.stock.togetherStock.model.Dto;
 
 import com.stock.togetherStock.model.Comment;
 import com.stock.togetherStock.model.Member;
+import com.stock.togetherStock.model.Post;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +31,14 @@ public class PostDto {
     private Member member;
 
     private List<Comment> Comments = new ArrayList<>();
+
+    public Post toEntity() {
+        return Post.builder()
+            .title(title)
+            .content(content)
+            .member(member)
+            .Comments(Comments)
+            .build();
+    }
 
 }

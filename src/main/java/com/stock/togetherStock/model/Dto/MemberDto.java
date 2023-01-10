@@ -1,18 +1,21 @@
 package com.stock.togetherStock.model.Dto;
 
 import com.stock.togetherStock.model.Comment;
+import com.stock.togetherStock.model.Member;
 import com.stock.togetherStock.model.Post;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.validation.constraints.NotEmpty;
 
-@NoArgsConstructor()
+@NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@Data
 public class MemberDto {
 
     private Long memberId;
@@ -37,6 +40,17 @@ public class MemberDto {
 
     private List<Post> posts = new ArrayList<>();
 
-    private List<Comment> Comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
+    public Member toEntity() {
+        return Member.builder()
+            .email(email)
+            .name(name)
+            .password(password)
+            .nickname(nickname)
+            .phone(phone)
+            .intro(intro)
+            .regiMemDate(LocalDateTime.now())
+            .build();
+    }
 }

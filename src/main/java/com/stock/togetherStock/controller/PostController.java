@@ -13,7 +13,7 @@ public class PostController {
     public String post(Model model) {
         model.addAttribute("");
 
-        return ""
+        return "";
 
     }
 }
