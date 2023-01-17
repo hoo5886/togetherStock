@@ -6,6 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.stock.togetherStock.member.domain.Member;
 import com.stock.togetherStock.member.domain.MemberDto;
@@ -21,13 +26,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
 class MemberServiceTest {
+
+    @Autowired
+    MockMvc mockMvc;
 
     @Mock
     private MemberRepository memberRepository;
@@ -97,5 +107,32 @@ class MemberServiceTest {
             MemberErrorCode.ALREADY_EXIST_EMAIL.getMessage());
 
     }
+
+    @Test
+    @DisplayName("로그인 기능 테스트")
+    void login() throws Exception {
+        //given
+        MemberDto memberDto = MemberDto.builder()
+            .email("test@naver.com")
+            .password("12345")
+            .build();
+
+        //when
+        Member member = memberService.signUp(memberDto);
+
+        given(memberRepository.save(any()))
+            .willReturn(member);
+
+        //then
+        mockMvc.perform(post("/loginProc")
+                .param("email", "test@naver.com")
+                .param("password", "12345")
+                .with(csrf()))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/")) // (5)
+            .andExpect(authenticated().withUsername("test@naver.com")); // (6)
+
+    }
+
 }
 

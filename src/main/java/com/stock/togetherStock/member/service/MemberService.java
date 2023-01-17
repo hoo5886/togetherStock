@@ -5,7 +5,11 @@ import com.stock.togetherStock.member.domain.MemberDto;
 import com.stock.togetherStock.member.exception.MemberErrorCode;
 import com.stock.togetherStock.member.exception.MemberException;
 import com.stock.togetherStock.member.repository.MemberRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,11 +37,23 @@ public class MemberService {
     }
 
     /**
+     * 마이 페이지
+     * */
+    public Member detail(Long id) {
+
+        return memberRepository.findByMemberId(id).get();
+    }
+
+    /**
      * 회원정보 수정
      */
     /*@Transactional
-    public Member update(MemberDto memberDto) throws Exception {
+    public Member update(Long memberId) throws Exception {
 
+        Member member = memberRepository.findByMemberId(memberId)
+            .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+
+        return ;
     }*/
-
 }

@@ -9,6 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/post")
 public class PostController {
 
+
+    @GetMapping
+    public String view() {
+
+        return "/post/postList";
+    }
+
     @GetMapping("/{postId}")
     public String post(Model model) {
         model.addAttribute("");

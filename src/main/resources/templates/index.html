@@ -5,14 +5,20 @@
   <body>
     <div class="container">
       <div class="hero-unit">
-        <h1>Test</h1>
+        <h1>Login Page</h1>
         <p>
-          Welcome to the Spring MVC Quickstart application!
-          Get started quickly by signing up.
+          Welcome to my home page!
         </p>
-        <p>
-          <a th:href="@{/member/signup}" class="btn btn-large btn-success">Sign up</a>
-        </p>
+        <form action="/loginProc" name="login" method="post">
+          <div> Email: <input type="text" name="email"></div>
+          <div> Password: <input type="password" name="password"></div>
+
+          <p></p>
+
+          <button type="submit"> Login </button>
+          <button type="button" onclick="location.href='/member/signup' "> Sign up </button>
+
+        </form>
       </div>
     </div>
   </body>
