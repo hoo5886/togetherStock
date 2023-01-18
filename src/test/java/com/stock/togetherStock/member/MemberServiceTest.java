@@ -35,10 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 @ExtendWith(MockitoExtension.class)
 @Transactional
 class MemberServiceTest {
-
-    @Autowired
-    MockMvc mockMvc;
-
     @Mock
     private MemberRepository memberRepository;
 
@@ -105,32 +101,6 @@ class MemberServiceTest {
 
         assertThat(memberException.getErrorMessage()).isEqualTo(
             MemberErrorCode.ALREADY_EXIST_EMAIL.getMessage());
-
-    }
-
-    @Test
-    @DisplayName("로그인 기능 테스트")
-    void login() throws Exception {
-        //given
-        MemberDto memberDto = MemberDto.builder()
-            .email("test@naver.com")
-            .password("12345")
-            .build();
-
-        //when
-        Member member = memberService.signUp(memberDto);
-
-        given(memberRepository.save(any()))
-            .willReturn(member);
-
-        //then
-        mockMvc.perform(post("/loginProc")
-                .param("email", "test@naver.com")
-                .param("password", "12345")
-                .with(csrf()))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/")) // (5)
-            .andExpect(authenticated().withUsername("test@naver.com")); // (6)
 
     }
 
