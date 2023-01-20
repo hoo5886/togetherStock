@@ -39,7 +39,6 @@ public class SecurityConfig {
             .usernameParameter("email")
             .passwordParameter("password")
             .loginPage("/")
-            .failureUrl("/")
             .loginProcessingUrl("/loginProc")
             .successHandler(authSuccessHandler)
             .failureHandler(failureHandler);

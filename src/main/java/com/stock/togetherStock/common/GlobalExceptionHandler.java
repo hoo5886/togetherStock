@@ -39,6 +39,4 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.ok().body(new ErrorArgumentResponse("ERROR-100", "유효성 검사 실패", errorMaps));
     }
-
-
 }
