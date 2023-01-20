@@ -138,42 +138,16 @@
 <header>
 
 </header>
-
-<!--  -->
-  <p>
     <!-- 회원 정보 -->
-    회원 상세 페이지
-  </p>
-
-  <!-- Collection of personal(member) information? -->
+<h1>마이 페이지</h1>
   <!-- 회원 정보 -->
-  <div class="MemberInfo_box">
-      <div>
-        <p th:field="${member.email}">이메일</p>
-      </div>
-
-      <div>
-        <p th:field="${member.password}">비밀번호</p>
-      </div>
-
-      <div>
-        <p th:field="${member.name}">이름</p>
-      </div>
-
-      <div>
-        <p th:field="${member.nickname}">닉네임</p>
-      </div>
-
-      <div>
-        <p th:field="${member.phone}">휴대폰</p>
-      </div>
-
-      <div>
-        <p th:field="${member.intro}">자기소개</p>
-      </div>
-
-  </div>
-  <a th:href="@{/member/edit/{id}(id = ${member.memberId})}">회원정보 수정하기</a>
+        <p th:text="${member.email}">이메일</p>
+        <p th:password="${member.password}">비밀번호</p>
+        <p th:text="${member.name}">이름</p>
+        <p th:text="${member.nickname}">닉네임</p>
+        <p th:text="${member.phone}">휴대폰</p>
+        <p th:text="${member.intro}">자기소개</p>
+  <a th:href="@{/member/edit/{id}(id = ${member.getMemberId()})}">회원정보 수정하기</a>
 
 </body>
 </html>

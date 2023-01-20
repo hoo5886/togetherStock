@@ -37,6 +37,8 @@ public class MemberDto {
 
     private LocalDateTime regiMemDate;
 
+    private LocalDateTime updateMemDate;
+
     private List<Post> posts = new ArrayList<>();
 
     private List<Comment> comments = new ArrayList<>();

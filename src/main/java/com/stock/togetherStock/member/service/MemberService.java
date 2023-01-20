@@ -5,6 +5,7 @@ import com.stock.togetherStock.member.domain.MemberDto;
 import com.stock.togetherStock.member.exception.MemberErrorCode;
 import com.stock.togetherStock.member.exception.MemberException;
 import com.stock.togetherStock.member.repository.MemberRepository;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,13 +48,15 @@ public class MemberService {
     /**
      * 회원정보 수정
      */
-    /*@Transactional
-    public Member update(Long memberId) throws Exception {
+    @Transactional
+    public Long update(Long id, MemberDto memberDto) {
 
-        Member member = memberRepository.findByMemberId(memberId)
+        Member member = memberRepository.findById(id)
             .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
+        member.update(memberDto.getName(), memberDto.getNickname(),
+            member.getPhone(), memberDto.getIntro());
 
-        return ;
-    }*/
+        return id;
+    }
 }

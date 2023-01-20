@@ -135,62 +135,40 @@
 </head>
 
 <body>
-<header>
+  <header>
 
-  <!-- 클릭 시 메인 페이지로 이동 -->
-  <button onclick="PageRequest(Main_page)">Remember-Feedback</button>
-  <title>회원 상세 페이지</title>
+    <!-- 클릭 시 메인 페이지로 이동 -->
+    <button onclick="PageRequest(Main_page)">Remember-Feedback</button>
+    <title>회원 상세 페이지</title>
 
-</header>
-
-  <p>
-    <!-- 회원 정보 -->
-    회원정보를 입력해주세요
-  </p>
-
+  </header>
+  <h1>회원정보 수정하기</h1>
   <!-- Collection of personal(member) information? -->
   <!-- 회원 정보 -->
   <div class="MemberInfo_box">
-      <div>
-        <input type="email" th:text="${memberDto.email}">
-        <p>이메일 메세지</p>
-      </div>
+      <form th:action="@{/member/edit/{id}(id = ${member.memberId})}" method="post">
+            Email
+          <div type="email" th:text="${member.email}"/>
+            Name
+            <input type="text" th:field="${member.name}">
+          <div>
+            Nickname
+            <input type="text" th:field="${member.nickname}">
+          </div>
+          <div>
+            Phone number
+            <input type="text" th:field="${member.phone}">
+          </div>
+          <div>
+            Intro
+            <input type="text" th:field="${member.intro}">
+          </div>
 
-      <div>
-        <input type="password" th:field="${memberDto.password}" placeholder="비밀번호">
-        <p>비밀번호 메세지</p>
-      </div>
-
-      <div>
-        <input type="password" placeholder="비밀번호 확인">
-        <p>비밀번호 확인 메세지</p>
-      </div>
-
-      <div>
-        <input type="text" th:field="${memberDto.name}" placeholder="이름">
-        <p>이름 메세지</p>
-      </div>
-
-      <div>
-        <input type="text" th:field="${memberDto.nickname}" placeholder="닉네임">
-        <p>닉네임 메세지</p>
-      </div>
-
-      <div>
-        <input type="text" th:field="${memberDto.phone}" placeholder="휴대폰 번호">
-        <p>휴대폰/</p>
-      </div>
-
-      <div>
-        <input type="text" th:field="${memberDto.intro}" placeholder="휴대폰 번호">
-        <p>휴대폰/</p>
-      </div>
-
-      <div>
-        <input type="submit" value="회원가입">
-      </div>
+          <div>
+            <input type="submit" value="수정하기"/>
+          </div>
+      </form>
   </div>
-  <a th:href="@{/member/edit/{id}(id = ${memberDto.memberId})}">회원정보 수정하기</a>
 
 </body>
 </html>

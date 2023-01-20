@@ -31,7 +31,7 @@ public class Member implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long memberId;
+    private Long memberId;
 
     @Column
     private String email;
@@ -54,11 +54,34 @@ public class Member implements UserDetails {
     @Column
     private LocalDateTime regiMemDate;
 
+    @Column
+    private LocalDateTime updateMemDate;
+
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "comment")
     private List<Comment> Comments = new ArrayList<>();
+
+    public MemberDto toMemberDto() {
+
+        return MemberDto.builder()
+            .memberId(memberId)
+            .password(password)
+            .name(name)
+            .nickname(nickname)
+            .phone(phone)
+            .intro(intro)
+            .build();
+    }
+
+    public void update(String name, String nickname, String phone, String intro) {
+        this.name = name;
+        this.nickname = nickname;
+        this.phone = phone;
+        this.intro = intro;
+        this.updateMemDate = LocalDateTime.now();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

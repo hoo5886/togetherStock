@@ -101,8 +101,25 @@ class MemberServiceTest {
 
         assertThat(memberException.getErrorMessage()).isEqualTo(
             MemberErrorCode.ALREADY_EXIST_EMAIL.getMessage());
-
     }
 
+    @Test
+    @DisplayName("회원정보 수정 테스트")
+    void update() {
+        //given
+        MemberDto memberDto = MemberDto.builder()
+            .email("test@naver.com")
+            .password("12345")
+            .name("test")
+            .nickname("hateTest")
+            .phone("11111111")
+            .build();
+
+        given(memberRepository.save(memberDto.toEntity()))
+            .willReturn();
+
+        assertThat()
+
+    }
 }
 
