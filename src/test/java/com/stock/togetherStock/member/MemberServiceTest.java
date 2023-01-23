@@ -6,11 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.doNothing;
 
 import com.stock.togetherStock.member.domain.Member;
 import com.stock.togetherStock.member.domain.MemberDto;
@@ -26,9 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -104,22 +98,40 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원정보 수정 테스트")
+    @DisplayName("회원정보 수정 성공")
     void update() {
         //given
         MemberDto memberDto = MemberDto.builder()
+            .memberId(1L)
             .email("test@naver.com")
             .password("12345")
-            .name("test")
-            .nickname("hateTest")
+            .name("oldName")
+            .nickname("oldNick")
             .phone("11111111")
+            .intro("hi")
+            .build();
+        Member member = memberDto.toEntity();
+
+        MemberDto newMemberDto = MemberDto.builder()
+            .memberId(1L)
+            .email("test@naver.com")
+            .password("12345")
+            .name("newName")
+            .nickname("newNick")
+            .phone("22222222")
+            .intro("hello")
             .build();
 
-        given(memberRepository.save(memberDto.toEntity()))
-            .willReturn();
+        //when
+        given(memberRepository.findById(1L))
+            .willReturn(Optional.of(member));
+        memberService.update(1L, newMemberDto);
 
-        assertThat()
-
+        //then
+        assertEquals("newName", member.getName());
+        assertEquals("newNick", member.getNickname());
+        assertEquals("22222222", member.getPhone());
+        assertEquals("hello", member.getIntro());
     }
 }
 

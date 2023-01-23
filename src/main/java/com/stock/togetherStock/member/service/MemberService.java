@@ -54,8 +54,10 @@ public class MemberService {
         Member member = memberRepository.findById(id)
             .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        member.update(memberDto.getName(), memberDto.getNickname(),
-            member.getPhone(), memberDto.getIntro());
+        member.update(memberDto.getName(),
+            memberDto.getNickname(),
+            memberDto.getPhone(),
+            memberDto.getIntro());
 
         return id;
     }
