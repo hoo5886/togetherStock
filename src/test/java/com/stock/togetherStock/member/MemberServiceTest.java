@@ -140,4 +140,3 @@ class MemberServiceTest {
         assertThat(memberService.delete(1L)).isEqualTo(true);
     }
 }
-
