@@ -4,9 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.stock.togetherStock.member.domain.Member;
 import com.stock.togetherStock.member.domain.MemberDto;
@@ -43,17 +50,22 @@ class MemberServiceTest {
         memberService = new MemberService(memberRepository, passwordEncoder);
     }
 
-    @Test
-    @DisplayName("회원가입 테스트")
-    void createMember() throws Exception {
-        //given
-        MemberDto memberDto = MemberDto.builder()
+    protected MemberDto createMemberDto() {
+
+        return MemberDto.builder()
             .email("test@naver.com")
             .password("12345")
             .name("test")
             .nickname("hateTest")
             .phone("11111111")
             .build();
+    }
+
+    @Test
+    @DisplayName("회원가입 테스트")
+    void createMember() throws Exception {
+        //given
+        MemberDto memberDto = createMemberDto();
         Member member = memberDto.toEntity();
 
         //when
@@ -74,13 +86,7 @@ class MemberServiceTest {
     @DisplayName("회원가입 중복 테스트")
     void duplicateMember() {
         //given
-        MemberDto memberDto = MemberDto.builder()
-            .email("test@naver.com")
-            .password("12345")
-            .name("test")
-            .nickname("hateTest")
-            .phone("11111111")
-            .build();
+        MemberDto memberDto = createMemberDto();
 
         given(memberRepository.findByEmail(anyString()))
             .willReturn(Optional.of(Member.builder().build()));
@@ -101,15 +107,7 @@ class MemberServiceTest {
     @DisplayName("회원정보 수정 성공")
     void update() {
         //given
-        MemberDto memberDto = MemberDto.builder()
-            .memberId(1L)
-            .email("test@naver.com")
-            .password("12345")
-            .name("oldName")
-            .nickname("oldNick")
-            .phone("11111111")
-            .intro("hi")
-            .build();
+        MemberDto memberDto = createMemberDto();
         Member member = memberDto.toEntity();
 
         MemberDto newMemberDto = MemberDto.builder()
@@ -132,6 +130,14 @@ class MemberServiceTest {
         assertEquals("newNick", member.getNickname());
         assertEquals("22222222", member.getPhone());
         assertEquals("hello", member.getIntro());
+    }
+
+    @Test
+    @DisplayName("회원정보 삭제 성공")
+    void delete() {
+        doNothing().when(memberRepository).deleteById(anyLong());
+
+        assertThat(memberService.delete(1L)).isEqualTo(true);
     }
 }
 
