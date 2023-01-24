@@ -1,12 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
   <meta charset="UTF-8">
 </head>
+<style>
+
+  .layout {
+    width: 500px;
+  }
+
+
+</style>
 <body>
-  <h1>게시판 목록에 온 것을 환영합니다!!</h1>
+  <h1>Welcome to My Post List page!</h1>
 
-여기에 게시판 리스트 넣을 자리.
 
+  <div class="layout">
+
+    <table>
+      <thead>
+      </thead>
+      <tbody>
+        <tr th:each="post : ${postList}">
+          <td th:text="${post.postId}">글 번호</td>
+          <td th:text="${post.title}">글 제목</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>

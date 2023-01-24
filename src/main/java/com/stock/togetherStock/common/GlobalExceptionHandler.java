@@ -3,6 +3,8 @@ package com.stock.togetherStock.common;
 import com.stock.togetherStock.common.response.ErrorArgumentResponse;
 import com.stock.togetherStock.common.response.ErrorResponse;
 import com.stock.togetherStock.member.exception.MemberException;
+import com.stock.togetherStock.post.exception.PostErrorCode;
+import com.stock.togetherStock.post.exception.PostException;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,13 @@ public class GlobalExceptionHandler {
 
 /*        ErrorResponse response = new ErrorResponse(e.getErrorCode(),
             e.getErrorMessage());*/
+
+        return ResponseEntity.ok().body(new ErrorResponse(e.getErrorCode(), e.getErrorMessage()));
+    }
+
+    @ExceptionHandler(PostException.class)
+    public ResponseEntity<ErrorResponse> postException(PostException e) {
+        log.error("postException : ", e);
 
         return ResponseEntity.ok().body(new ErrorResponse(e.getErrorCode(), e.getErrorMessage()));
     }
