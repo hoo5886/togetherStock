@@ -148,6 +148,7 @@
         <p th:text="${member.phone}">휴대폰</p>
         <p th:text="${member.intro}">자기소개</p>
   <a th:href="@{/member/edit/{id}(id = ${member.getMemberId()})}">회원정보 수정하기</a>
+  <a th:href="@{/}">회원탈퇴 하기</a>
 
 </body>
 </html>

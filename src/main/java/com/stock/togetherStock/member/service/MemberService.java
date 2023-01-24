@@ -42,7 +42,8 @@ public class MemberService {
      * */
     public Member detail(Long id) {
 
-        return memberRepository.findByMemberId(id).get();
+        return memberRepository.findByMemberId(id)
+            .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
     /**
@@ -60,5 +61,16 @@ public class MemberService {
             memberDto.getIntro());
 
         return id;
+    }
+
+    /**
+     * 회원정보 삭제
+     */
+    @Transactional
+    public boolean delete(Long id) {
+
+        memberRepository.deleteById(id);
+
+        return true;
     }
 }

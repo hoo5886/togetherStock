@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,6 +79,18 @@ public class MemberController {
 
         memberService.update(id, memberDto);
 
+        return "redirect:/";
+    }
+
+    /**
+     * 회원정보 삭제
+     */
+    @DeleteMapping("/member/delete")
+    public String deletePage(Long id) {
+
+        memberService.delete(id);
+
+        //일단 index로.. 나중에 게시판 리스트로 바꾸자.
         return "redirect:/";
     }
 
