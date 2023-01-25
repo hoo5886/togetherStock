@@ -22,7 +22,6 @@ public class PostService {
      * 게시물 목록 조회 로직
      */
     public List<Post> postList() {
-
         return postRepository.findAll();
     }
 
@@ -31,7 +30,6 @@ public class PostService {
      */
     @Transactional
     public Post write(PostDto postDto) {
-
         PostDto savedDto = PostDto.builder()
             .title(postDto.getTitle())
             .content(postDto.getContent())

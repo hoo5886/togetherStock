@@ -34,7 +34,6 @@ public class MemberController {
         return "/member/singUpForm";
     }
 
-
     /**
      * 회원가입 입력
      */
