@@ -3,7 +3,9 @@ package com.stock.togetherStock.post;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 
 import com.stock.togetherStock.post.domain.Post;
 import com.stock.togetherStock.post.domain.PostDto;
@@ -12,8 +14,9 @@ import com.stock.togetherStock.post.service.PostService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -69,6 +72,36 @@ public class PostServiceTest {
 
         //then
         assertThat(savedPostList).isEqualTo(postList);
+    }
+
+    @Test
+    @DisplayName("게시물 정보 수정 성공")
+    void update() {
+        //given
+        PostDto postDto = createPostDto();
+        Post post = postDto.toEntity();
+
+        PostDto newPostDto = PostDto.builder()
+            .title("newTitle")
+            .content("newContent")
+            .build();
+
+        //when
+        given(postRepository.findByPostId(1L))
+            .willReturn(Optional.of(post));
+        postService.PostUpdate(1L, newPostDto);
+
+        //then
+        assertEquals("newTitle", post.getTitle());
+        assertEquals("newContent", post.getContent());
+    }
+
+    @Test
+    @DisplayName("게시물 정보 삭제 성공")
+    void delete() {
+        doNothing().when(postRepository).deleteById(anyLong());
+
+        assertThat(postService.delete(1L)).isEqualTo(true);
     }
 
 }

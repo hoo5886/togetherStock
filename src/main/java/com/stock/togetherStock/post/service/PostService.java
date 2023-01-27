@@ -59,8 +59,10 @@ public class PostService {
      * 게시물 삭제
      */
     @Transactional
-    public void delete(Long postId) {
+    public boolean delete(Long postId) {
 
         postRepository.deleteById(postId);
+
+        return true;
     }
 }
