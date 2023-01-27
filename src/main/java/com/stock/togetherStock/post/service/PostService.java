@@ -40,11 +40,27 @@ public class PostService {
     }
 
     /**
-     * 특정 게시물 조회 로직
+     * 게시물 수정
      */
-    public Post view(Long id) {
+    @Transactional
+    public Long PostUpdate(Long postId, PostDto postDto) {
 
-        return postRepository.findByPostId(id)
+        Post post = postRepository.findByPostId(postId)
             .orElseThrow(() -> new PostException(PostErrorCode.POST_ERROR_CODE));
+
+        post.update(postDto.getTitle(),
+                    postDto.getContent()
+                    );
+
+        return postId;
+    }
+
+    /**
+     * 게시물 삭제
+     */
+    @Transactional
+    public void delete(Long postId) {
+
+        postRepository.deleteById(postId);
     }
 }

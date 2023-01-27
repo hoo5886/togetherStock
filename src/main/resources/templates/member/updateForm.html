@@ -149,16 +149,19 @@
       <form th:action="@{/member/edit/{id}(id = ${member.memberId})}" method="post">
             Email
           <div type="email" th:text="${member.email}"/>
+
             Name
             <input type="text" th:field="${member.name}">
           <div>
             Nickname
             <input type="text" th:field="${member.nickname}">
           </div>
+
           <div>
             Phone number
             <input type="text" th:field="${member.phone}">
           </div>
+
           <div>
             Intro
             <input type="text" th:field="${member.intro}">

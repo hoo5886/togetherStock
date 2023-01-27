@@ -89,8 +89,7 @@ public class MemberController {
 
         memberService.delete(id);
 
-        //일단 index로.. 나중에 게시판 리스트로 바꾸자.
-        return "redirect:/";
+        return "redirect:/post/postList";
     }
 
 }
