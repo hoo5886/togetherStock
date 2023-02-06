@@ -1,10 +1,11 @@
 package com.stock.togetherStock.post.domain;
 
 import com.stock.togetherStock.member.domain.Member;
-import com.stock.togetherStock.comment.Comment;
+import com.stock.togetherStock.comment.domain.Comment;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,9 +29,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Post {
 
-    @Id
-    @GeneratedValue
-    private long postId;
+    @Id @GeneratedValue
+    @Column(name = "post_id")
+    private Long postId;
 
     @Column
     private String title;
@@ -45,10 +46,10 @@ public class Post {
     private LocalDateTime updatePostDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> Comments = new ArrayList<>();
 
     public PostDto toPostDto() {

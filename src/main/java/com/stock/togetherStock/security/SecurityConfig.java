@@ -33,6 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
+            //.antMatchers("/post/{postId}/comment/write").authenticated()
             .antMatchers("/**").permitAll();
 
         http.formLogin()

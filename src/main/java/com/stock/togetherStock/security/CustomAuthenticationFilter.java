@@ -10,12 +10,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class CustomAuthenticationFilter extends
     UsernamePasswordAuthenticationFilter {
-
-
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
         HttpServletResponse response) throws AuthenticationException {
         return super.attemptAuthentication(request, response);
     }
 }
+

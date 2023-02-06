@@ -1,13 +1,20 @@
 package com.stock.togetherStock.post.controller;
 
+import com.stock.togetherStock.comment.domain.Comment;
+import com.stock.togetherStock.comment.domain.CommentDto;
+import com.stock.togetherStock.comment.repository.CommentRepository;
+import com.stock.togetherStock.member.domain.Member;
+import com.stock.togetherStock.member.repository.MemberRepository;
 import com.stock.togetherStock.post.domain.Post;
 import com.stock.togetherStock.post.domain.PostDto;
 import com.stock.togetherStock.post.exception.PostErrorCode;
 import com.stock.togetherStock.post.exception.PostException;
 import com.stock.togetherStock.post.repository.PostRepository;
 import com.stock.togetherStock.post.service.PostService;
-import java.time.LocalDateTime;
+import java.security.Principal;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +28,8 @@ public class PostController {
 
     private final PostService postService;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
 
 
     /**
@@ -47,23 +56,36 @@ public class PostController {
     /**
      * 게시물 입력
      */
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/post/write")
-    public String writeProc(PostDto postDto) {
+    public String writeProc(PostDto postDto, Principal principal) throws PostException {
 
-        postService.write(postDto);
-
-        return "redirect:/post/list";
+        if (principal == null) {
+            //익명사용자의 게시글 작성
+            throw new PostException(PostErrorCode.POST_NEED_LOGIN);
+        } else {
+            Member member = memberRepository.findByEmail(principal.getName()).get();
+            postService.write(postDto, member);
+            return "redirect:/post/list";
+        }
     }
 
     /**
-     * 특정 게시물 조회
+     * 특정 게시물 조회 + 댓글 조회
      */
     @GetMapping("/post/{postId}")
-    public String view(Model model, @PathVariable Long postId) {
+    public String view(Model model, @PathVariable Long postId, CommentDto commentDto) {
 
         Post post = postRepository.findByPostId(postId)
-                .orElseThrow(() -> new PostException(PostErrorCode.POST_ERROR_CODE));
+                .orElseThrow(() -> new PostException(PostErrorCode.POST_NO_POST));
 
+        if (!commentRepository.findAllByPostPostId(postId).isEmpty()) {
+            List<Comment> commentList = commentRepository.findAllByPostPostId(postId);
+            model.addAttribute("commentList", commentList);
+        }
+
+        //댓글 작성할 때 필요한 Dto
+        model.addAttribute("comment", commentDto);
         model.addAttribute("post", post);
 
         return "/post/postView";
@@ -76,7 +98,7 @@ public class PostController {
     public String updatePostPage(Model model, @PathVariable Long postId){
 
         Post post = postRepository.findByPostId(postId)
-                .orElseThrow(() -> new PostException(PostErrorCode.POST_ERROR_CODE));
+                .orElseThrow(() -> new PostException(PostErrorCode.POST_NO_POST));
 
         model.addAttribute("post", post.toPostDto());
 
@@ -104,7 +126,7 @@ public class PostController {
         if (postRepository.findByPostId(postId).isPresent()) {
             postService.delete(postId);
         } else {
-            throw new PostException(PostErrorCode.POST_ERROR_CODE);
+            throw new PostException(PostErrorCode.POST_NO_POST);
         }
 
         return "redirect:/post/list";

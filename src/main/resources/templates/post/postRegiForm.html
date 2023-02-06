@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -24,10 +25,11 @@
 
 </style>
 <body>
-  <div class="layout">
-    <form action="/post/write" method="post">
-        <input th:text="${form.title}">
-        <textarea th:text="${form.content}"></textarea>
+  <div sec:if="${authenticated}" class="layout">
+    <form sec:authorize="isAuthenticated()"
+        th:action="@{/post/write}" method="post">
+        <input th:field="${form.title}" placeholder="제목을 입력하세요.">
+        <textarea th:field="${form.content}" placeholder="내용을 입력하세요."></textarea>
         <button type="submit">작성하기</button>
     </form>
   </div>

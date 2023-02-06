@@ -1,6 +1,6 @@
 package com.stock.togetherStock.post.domain;
 
-import com.stock.togetherStock.comment.Comment;
+import com.stock.togetherStock.comment.domain.Comment;
 import com.stock.togetherStock.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
