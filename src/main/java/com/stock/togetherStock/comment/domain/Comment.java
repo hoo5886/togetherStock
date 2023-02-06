@@ -1,4 +1,4 @@
-package com.stock.togetherStock.comment;
+package com.stock.togetherStock.comment.domain;
 
 
 import com.stock.togetherStock.member.domain.Member;
@@ -16,31 +16,36 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@Getter
 @AllArgsConstructor
 public class Comment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long commentId;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id")
+    private Long commentId;
 
     @Column
-    private String comment;
+    private String commentContent;
 
     @Column
     private LocalDateTime regiCommentDate;
 
+    @Column
+    private LocalDateTime updateCommentDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "member_Id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId")
+    @JoinColumn(name = "post_Id")
     private Post post;
 
 }

@@ -1,20 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:xmln="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
 <body>
-
-  <h1>게시물</h1>
+  <!--게시글 시작-->
+  <h1>게시물란</h1>
   <div class="post-container">
     <p th:text="${post.title}"></p>
     <p th:text="${post.content}"></p>
   </div>
+  <!--게시글 끝-->
+  <!-- 댓글 시작-->
+  <h2>댓글란</h2>
+  <div class="comment-container" th:if="${not #lists.isEmpty(commentList)}">
 
-  <div class="comment-container">
-
+    <div th:each="comment : ${commentList}">
+      <span th:text="${comment.getCommentId()}">댓글 번호</span>
+      <span th:text="${comment.getCommentContent()}">댓글 내용</span>
+    </div>
+  <!-- 댓글 끝 -->
   </div>
+  <!--댓글 작성 시작-->
+  <div sec:if="${authenticated}" class="comment-write">
+    <form sec:authorize="isAuthenticated()" type="number"
+          th:action="@{/post/{postId}/comment/write(postId = ${post.postId})}" method="post">
+      <label>내용</label>
+      <textarea th:field="${comment.commentContent}" cols="20" rows="10" placeholder="댓글을 입력해주세요."></textarea>
+      <button type="submit">작성하기</button>
+    </form>
+  </div>
+  <!--댓글 작성 끝-->
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 package com.stock.togetherStock.member.domain;
 
-import com.stock.togetherStock.comment.Comment;
+import com.stock.togetherStock.comment.domain.Comment;
 import com.stock.togetherStock.post.domain.Post;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,8 +29,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 public class Member implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
     @Column
@@ -60,7 +59,7 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "member")
     private List<Comment> Comments = new ArrayList<>();
 
     public MemberDto toMemberDto() {

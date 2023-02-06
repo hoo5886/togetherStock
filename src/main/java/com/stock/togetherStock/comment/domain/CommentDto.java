@@ -1,4 +1,4 @@
-package com.stock.togetherStock.comment;
+package com.stock.togetherStock.comment.domain;
 
 import com.stock.togetherStock.member.domain.Member;
 import com.stock.togetherStock.post.domain.Post;
@@ -16,12 +16,23 @@ public class CommentDto {
 
     private long commentId;
 
-    private String comment;
+    private String commentContent;
 
     private LocalDateTime regiCommentDate;
+
+    private LocalDateTime updateCommentDate;
 
     private Member member;
 
     private Post post;
 
+
+    public Comment toEntity() {
+        return Comment.builder()
+            .commentContent(commentContent)
+            .regiCommentDate(LocalDateTime.now())
+            .member(member)
+            .post(post)
+            .build();
+    }
 }

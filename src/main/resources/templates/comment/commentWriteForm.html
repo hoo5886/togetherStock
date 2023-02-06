@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+  <h1>게시물</h1>
+  <div class="post-container">
+    <p th:text="${post}"></p>
+    <p th:text="${post.content}"></p>
+  </div>
+
+  <div class="comment-container">
+      <form th:action="@{/post/{postId}(postId = ${post.postId})/comment/write}" method="post">
+      <div>
+        <label>댓글 작성자</label>
+        <p sec:authentication="#{}"></p>
+      </div>
+
+      <div>
+        <p th:text="${comment.getComment()}"></p>
+      </div>
+      <div>
+        <input type="submit" value="댓글 작성하기">
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

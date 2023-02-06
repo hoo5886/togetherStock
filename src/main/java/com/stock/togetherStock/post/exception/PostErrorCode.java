@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PostErrorCode {
 
-    POST_ERROR_CODE("존재하는 게시글이 없습니다.");
+    POST_NO_POST("존재하는 게시글이 없습니다."),
+    POST_NEED_LOGIN("게시글을 작성하려면 로그인 정보가 필요합니다.");
 
     private final String message;
 }

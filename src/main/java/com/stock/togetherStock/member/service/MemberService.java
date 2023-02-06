@@ -5,12 +5,8 @@ import com.stock.togetherStock.member.domain.MemberDto;
 import com.stock.togetherStock.member.exception.MemberErrorCode;
 import com.stock.togetherStock.member.exception.MemberException;
 import com.stock.togetherStock.member.repository.MemberRepository;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,5 +70,19 @@ public class MemberService {
         memberRepository.deleteById(id);
 
         return true;
+    }
+
+    /**
+     * member 정보 가져오기
+     */
+    public Member getMember(String username) {
+        //findByEmail 또는 findBy
+        Optional<Member> member = memberRepository.findByEmail(username);
+        if (member.isPresent()) {
+            return member.get();
+        } else {
+            throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
     }
 }
