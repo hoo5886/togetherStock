@@ -74,7 +74,7 @@ public class PostController {
      * 특정 게시물 조회 + 댓글 조회
      */
     @GetMapping("/post/{postId}")
-    public String view(Model model, @PathVariable Long postId, CommentDto commentDto) {
+    public String view(Model model, @PathVariable Long postId, Principal principal) {
 
         Post post = postRepository.findByPostId(postId)
                 .orElseThrow(() -> new PostException(PostErrorCode.POST_NO_POST));
@@ -85,8 +85,9 @@ public class PostController {
         }
 
         //댓글 작성할 때 필요한 Dto
-        model.addAttribute("comment", commentDto);
+        model.addAttribute("commentForWrite", new CommentDto());
         model.addAttribute("post", post);
+        model.addAttribute("principal", principal);
 
         return "/post/postView";
     }
@@ -111,7 +112,7 @@ public class PostController {
     @PostMapping("/post/edit/{postId}")
     public String updatePostPageProc(@PathVariable Long postId, PostDto postDto) {
 
-        postService.PostUpdate(postId, postDto);
+        postService.postUpdate(postId, postDto);
 
         return "redirect:/post/list";
     }

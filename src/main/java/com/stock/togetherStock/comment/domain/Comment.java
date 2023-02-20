@@ -48,4 +48,21 @@ public class Comment {
     @JoinColumn(name = "post_Id")
     private Post post;
 
+    public void update(String content) {
+        this.commentContent = content;
+        this.updateCommentDate = LocalDateTime.now();
+    }
+
+    public CommentDto toDto() {
+        CommentDto commentDto = CommentDto.builder()
+            .commentId(commentId)
+            .commentContent(commentContent)
+            .regiCommentDate(regiCommentDate)
+            .updateCommentDate(updateCommentDate)
+            .memberDto(member.toMemberDto())
+            .postDto(post.toPostDto())
+            .build();
+        return commentDto;
+    }
+
 }

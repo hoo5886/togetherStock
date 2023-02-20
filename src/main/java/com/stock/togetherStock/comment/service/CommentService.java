@@ -4,9 +4,14 @@ import com.stock.togetherStock.comment.domain.Comment;
 import com.stock.togetherStock.comment.domain.CommentDto;
 import com.stock.togetherStock.comment.repository.CommentRepository;
 import com.stock.togetherStock.member.domain.Member;
+import com.stock.togetherStock.member.domain.MemberDto;
 import com.stock.togetherStock.member.repository.MemberRepository;
 import com.stock.togetherStock.post.domain.Post;
+import com.stock.togetherStock.post.domain.PostDto;
+import com.stock.togetherStock.post.exception.PostErrorCode;
+import com.stock.togetherStock.post.exception.PostException;
 import com.stock.togetherStock.post.repository.PostRepository;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,18 +28,33 @@ public class CommentService {
      * 댓글 작성 로직
      */
     @Transactional
-    public Comment write(Post post, Member member, CommentDto commentDto) {
+    public Comment write(PostDto postDto, MemberDto memberDto, CommentDto commentDto) {
 
-        commentDto.setMember(member);
-        commentDto.setPost(post);
+        //commentDto에 member와 post를 저장.
+        commentDto.setMemberDto(memberDto);
+        commentDto.setPostDto(postDto);
 
         Comment comment = Comment.builder()
-            .member(commentDto.getMember())
-            .post(commentDto.getPost())
+            .member(commentDto.getMemberDto().toEntity())
+            .post(commentDto.getPostDto().toEntity())
+            .commentContent(commentDto.getCommentContent())
+            .regiCommentDate(LocalDateTime.now())
             .build();
 
         return commentRepository.save(comment);
     }
 
+    /**
+     * 댓글 수정
+     */
+    @Transactional
+    public Long commentUpdate(Long commentId, CommentDto commentDto) {
 
+        Comment comment = commentRepository.findByCommentId(commentId)
+            .orElseThrow(() -> new PostException(PostErrorCode.POST_NO_POST));
+
+        comment.update(commentDto.getCommentContent());
+
+        return commentId;
+    }
 }

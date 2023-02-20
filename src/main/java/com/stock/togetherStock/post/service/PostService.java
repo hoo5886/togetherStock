@@ -45,14 +45,13 @@ public class PostService {
      * 게시물 수정
      */
     @Transactional
-    public Long PostUpdate(Long postId, PostDto postDto) {
+    public Long postUpdate(Long postId, PostDto postDto) {
 
         Post post = postRepository.findByPostId(postId)
             .orElseThrow(() -> new PostException(PostErrorCode.POST_NO_POST));
 
         post.update(postDto.getTitle(),
-                    postDto.getContent()
-                    );
+                    postDto.getContent());
 
         return postId;
     }

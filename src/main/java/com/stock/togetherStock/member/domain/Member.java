@@ -63,7 +63,6 @@ public class Member implements UserDetails {
     private List<Comment> Comments = new ArrayList<>();
 
     public MemberDto toMemberDto() {
-
         return MemberDto.builder()
             .memberId(memberId)
             .password(password)
