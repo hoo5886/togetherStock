@@ -4,6 +4,7 @@ package com.stock.togetherStock.comment.domain;
 import com.stock.togetherStock.member.domain.Member;
 import com.stock.togetherStock.post.domain.Post;
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,5 +48,22 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_Id")
     private Post post;
+
+    public void update(String content) {
+        this.commentContent = content;
+        this.updateCommentDate = LocalDateTime.now();
+    }
+
+    public CommentDto toDto() {
+        CommentDto commentDto = CommentDto.builder()
+            .commentId(commentId)
+            .commentContent(commentContent)
+            .regiCommentDate(regiCommentDate)
+            .updateCommentDate(updateCommentDate)
+            .memberDto(member.toMemberDto())
+            .postDto(post.toPostDto())
+            .build();
+        return commentDto;
+    }
 
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <!--게시글 시작-->
+  <h1>게시물란</h1>
+  <div class="post-container">
+    <p th:text="${post.title}"></p>
+    <p th:text="${post.content}"></p>
+  </div>
+  <!--게시글 끝-->
+  <!-- 댓글 시작-->
+  <h2>댓글란</h2>
+  <div class="comment-container" th:if="${!#lists.isEmpty(commentDtoes)}">
+
+    <div th:each="commentDto : ${commentDtoes}">
+      <p>
+        <span th:text="*{commentDto.getCommentId()}">댓글 번호</span>
+        <span th:text="*{commentDto.getMemberDto().name}">작성자 이름</span>
+        <span th:text="*{commentDto.commentContent}" th:unless="*{commentDto.getCommentId() eq commentForUpdate.getCommentId()}">댓글 내용</span>
+
+        <form sec:authorize="isAuthenticated()" th:action="@{/comment/edit/{commentId}(commentId = *{commentDto.getCommentId()})}" method="post">
+            <textarea type="text"
+             th:text="*{commentDto.commentContent}"
+             th:field="*{commentForUpdate.commentContent}"
+              th:if="*{commentDto.getCommentId().equals(commentForUpdate.getCommentId())}"
+             style="width:300px;height:30px;font-size:15px;">
+            </textarea>
+          <input th:if="*{commentDto.getCommentId().equals(commentForUpdate.getCommentId())}" type="submit" value="수정하기">
+        </form>
+      </p>
+    </div>
+  <!-- 댓글 끝 -->
+  </div>
+  <!--댓글 작성 시작-->
+  <div class="comment-write">
+      <label>입력할 댓글 내용</label>
+      <p></p>
+      <button>작성하기</button>
+  </div>
+  <!--댓글 작성 끝-->
+
+</body>
+</html>

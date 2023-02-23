@@ -134,7 +134,7 @@ public class PostServiceTest {
         //when
         given(postRepository.findByPostId(1L))
             .willReturn(Optional.of(post));
-        postService.PostUpdate(1L, newPostDto);
+        postService.postUpdate(1L, newPostDto);
 
         //then
         assertEquals("newTitle", post.getTitle());

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -56,21 +57,23 @@ public class Member implements UserDetails {
     @Column
     private LocalDateTime updateMemDate;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Comment> Comments = new ArrayList<>();
 
     public MemberDto toMemberDto() {
-
         return MemberDto.builder()
             .memberId(memberId)
+            .email(email)
             .password(password)
             .name(name)
             .nickname(nickname)
             .phone(phone)
             .intro(intro)
+            .regiMemDate(regiMemDate)
+            .updateMemDate(updateMemDate)
             .build();
     }
 

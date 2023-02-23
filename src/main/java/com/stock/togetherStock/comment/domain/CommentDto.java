@@ -1,7 +1,9 @@
 package com.stock.togetherStock.comment.domain;
 
 import com.stock.togetherStock.member.domain.Member;
+import com.stock.togetherStock.member.domain.MemberDto;
 import com.stock.togetherStock.post.domain.Post;
+import com.stock.togetherStock.post.domain.PostDto;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class CommentDto {
 
-    private long commentId;
+    private Long commentId;
 
     private String commentContent;
 
@@ -22,17 +24,23 @@ public class CommentDto {
 
     private LocalDateTime updateCommentDate;
 
-    private Member member;
+    private MemberDto memberDto;
 
-    private Post post;
-
+    private PostDto postDto;
 
     public Comment toEntity() {
         return Comment.builder()
+            .commentId(commentId)
             .commentContent(commentContent)
-            .regiCommentDate(LocalDateTime.now())
-            .member(member)
-            .post(post)
+            .regiCommentDate(regiCommentDate)
+            .updateCommentDate(updateCommentDate)
+            .member(memberDto.toEntity())
+            .post(postDto.toEntity())
             .build();
+    }
+
+    public void update(String content) {
+        this.commentContent = content;
+        this.updateCommentDate = LocalDateTime.now();
     }
 }

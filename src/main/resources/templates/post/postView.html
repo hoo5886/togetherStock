@@ -11,6 +11,8 @@
   <div class="post-container">
     <p th:text="${post.title}"></p>
     <p th:text="${post.content}"></p>
+    <a th:href="@{/post/delete/{postId}(postId = ${post.postId})}"
+       th:if="${principal.getName().equals(post.getMember().getEmail())}">글 삭제</a>
   </div>
   <!--게시글 끝-->
   <!-- 댓글 시작-->
@@ -18,8 +20,23 @@
   <div class="comment-container" th:if="${not #lists.isEmpty(commentList)}">
 
     <div th:each="comment : ${commentList}">
-      <span th:text="${comment.getCommentId()}">댓글 번호</span>
-      <span th:text="${comment.getCommentContent()}">댓글 내용</span>
+      <table>
+        <th>닉네임</th>
+        <th>댓글 내용</th>
+        <th></th>
+        <tr>
+          <td><span th:text="${comment.getMember().getNickname()}">아이디</span></td>
+          <td><span th:text="${comment.getCommentContent()}">댓글 내용</span>
+          <td><a sec:authorize="isAuthenticated()"
+                 th:if="${principal.getName().equals(comment.getMember().getEmail())}"
+                 th:href="@{/comment/edit/{commentId}(commentId=${comment.commentId})}">내 댓글 수정</a>
+          <a sec:authorize="isAuthenticated()"
+             th:if="${principal.getName().equals(comment.getMember().getEmail())}"
+             th:href="@{/comment/delete/{commentId}(commentId=${comment.commentId})}">삭제</a></td></td>
+        </tr>
+
+      </table>
+
     </div>
   <!-- 댓글 끝 -->
   </div>
@@ -27,12 +44,13 @@
   <div sec:if="${authenticated}" class="comment-write">
     <form sec:authorize="isAuthenticated()" type="number"
           th:action="@{/post/{postId}/comment/write(postId = ${post.postId})}" method="post">
-      <label>내용</label>
-      <textarea th:field="${comment.commentContent}" cols="20" rows="10" placeholder="댓글을 입력해주세요."></textarea>
-      <button type="submit">작성하기</button>
+      <p>
+        <label>댓글 입력하기</label>
+        <input th:field="${commentForWrite.commentContent}" style="width:300px;height:30px;font-size:15px;" placeholder="댓글을 입력해주세요.">
+        <button type="submit">작성하기</button>
+      </p>
     </form>
   </div>
   <!--댓글 작성 끝-->
-
 </body>
 </html>
