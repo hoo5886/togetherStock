@@ -1,5 +1,7 @@
 package com.stock.togetherStock.comment;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -13,6 +15,7 @@ import com.stock.togetherStock.post.domain.PostDto;
 import com.stock.togetherStock.post.repository.PostRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import net.bytebuddy.asm.Advice.Local;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -54,21 +57,22 @@ public class commentServiceTest {
 
     protected MemberDto createMemberDto() {
         return MemberDto.builder()
+            .memberId(1L)
             .email("test@naver.com")
             .password("12345")
             .name("test")
             .nickname("hateTest")
             .phone("11111111")
-            .memberId(1L)
+            .regiMemDate(LocalDateTime.now())
             .build();
     }
 
     protected PostDto createPostDto() {
         return PostDto.builder()
+            .postId(1L)
             .title("제목1")
             .content("내용1")
             .regiPostDate(LocalDateTime.now())
-            .postId(1L)
             .build();
     }
 
@@ -76,6 +80,7 @@ public class commentServiceTest {
         return CommentDto.builder()
             .commentId(1L)
             .commentContent("테스트용 코멘트")
+            .regiCommentDate(LocalDateTime.now())
             .build();
     }
 
@@ -95,7 +100,7 @@ public class commentServiceTest {
         given(commentRepository.findByCommentId(1L))
             .willReturn(Optional.of(comment));
 
-        //commentDto.getCommentContent = "테스트용 코멘트"
+            //commentDto.getCommentContent = "테스트용 코멘트"
         commentService.write(postDto, memberDto, commentDto);
 
         //when
@@ -103,7 +108,31 @@ public class commentServiceTest {
         commentService.commentUpdate(commentDto.getCommentId(), commentDto);
 
         //then
-        Assertions.assertEquals("수정 댓글", commentDto.getCommentContent());
+        assertEquals("수정 댓글", commentDto.getCommentContent());
         verify(commentRepository).findByCommentId(1L);
+    }
+
+    @Test
+    @DisplayName("댓글 삭제 성공")
+    @WithMockUser(username = "test@test.com", password="1234", roles="USER")
+    @Transactional
+    public void delete() {
+
+        //given
+        PostDto postDto = createPostDto();
+        MemberDto memberDto = createMemberDto();
+        CommentDto commentDto = createCommentDto();
+        commentDto.setPostDto(postDto);
+        commentDto.setMemberDto(memberDto);
+        Comment comment = commentDto.toEntity();
+
+            //commentDto.getCommentContent = "테스트용 코멘트"
+        commentService.write(postDto, memberDto, commentDto);
+
+        //when
+        commentService.delete(1L);
+
+        //then
+        assertThat(commentService.delete(1L)).isEqualTo(true);
     }
 }

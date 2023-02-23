@@ -45,13 +45,15 @@ public class MemberDto {
 
     public Member toEntity() {
         return Member.builder()
+            .memberId(memberId)
             .email(email)
-            .name(name)
             .password(password)
+            .name(name)
             .nickname(nickname)
             .phone(phone)
             .intro(intro)
-            .regiMemDate(LocalDateTime.now())
+            .regiMemDate(regiMemDate)
+            .updateMemDate(updateMemDate)
             .build();
     }
 }

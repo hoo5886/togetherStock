@@ -30,8 +30,10 @@ public class CommentDto {
 
     public Comment toEntity() {
         return Comment.builder()
+            .commentId(commentId)
             .commentContent(commentContent)
-            .regiCommentDate(LocalDateTime.now())
+            .regiCommentDate(regiCommentDate)
+            .updateCommentDate(updateCommentDate)
             .member(memberDto.toEntity())
             .post(postDto.toEntity())
             .build();

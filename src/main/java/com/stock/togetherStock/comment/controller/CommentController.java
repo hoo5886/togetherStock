@@ -28,9 +28,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -133,5 +135,24 @@ public class CommentController {
         }
 
         return "redirect:/post/" + postId;
+    }
+
+    /**
+     * 댓글 삭제
+     */
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/comment/delete/{commentId}")
+    public String delete(@PathVariable Long commentId) {
+
+        Optional<Comment> comment = commentRepository.findByCommentId(commentId);
+
+        if (comment.isPresent()) {
+            Long postId = comment.get().getPost().getPostId();
+            commentService.delete(commentId);
+
+            return "redirect:/post/" + postId;
+        } else {
+            throw new CommentException(CommentErrorCode.COMMENT_NOT_FOUND);
+        }
     }
 }

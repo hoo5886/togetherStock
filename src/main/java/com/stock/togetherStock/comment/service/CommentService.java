@@ -57,4 +57,15 @@ public class CommentService {
 
         return commentId;
     }
+
+    /**
+     * 댓글 삭제
+     */
+    @Transactional
+    public boolean delete(Long commentId) {
+
+        commentRepository.deleteById(commentId);
+
+        return true;
+    }
 }

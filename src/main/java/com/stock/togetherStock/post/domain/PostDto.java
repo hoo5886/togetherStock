@@ -29,14 +29,16 @@ public class PostDto {
 
     private Member member;
 
-    private List<Comment> Comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     public Post toEntity() {
         return Post.builder()
+            .postId(postId)
             .title(title)
             .content(content)
+            .regiPostDate(regiPostDate)
             .member(member)
-            .Comments(Comments)
+            .comments(comments)
             .build();
     }
 

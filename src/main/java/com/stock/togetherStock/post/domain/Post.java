@@ -49,14 +49,17 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    private List<Comment> Comments = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     public PostDto toPostDto() {
         return PostDto.builder()
             .postId(postId)
             .title(title)
             .content(content)
+            .regiPostDate(regiPostDate)
+            .member(member)
+            .comments(comments)
             .build();
     }
 
