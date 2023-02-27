@@ -3,10 +3,10 @@
 기본적인 회원가입 기능, 게시판 기능, 댓글 기능, 로그인 기능 등을 구현하였습니다. 또한 로그인하지 않은 사용자가 댓글을 작성할 수 없고 게시글 내용도 확인할 수 없도록 인증 기능을 구현하였습니다.
 
 ## 1. Skills
-### 1.1 Backend
+### 1.1 BackEnd
 `Java8`, `SpringBoot2.71`, `Spring security5.7.2`, `JPA`, `MySQL8.0.28`, `Junit4`
 
-### 1.2 FE
+### 1.2 FrontEnd
 `Thymeleaf`
 
 ## 2. 기능
