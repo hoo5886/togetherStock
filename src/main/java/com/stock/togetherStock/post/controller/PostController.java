@@ -13,6 +13,7 @@ import com.stock.togetherStock.post.repository.PostRepository;
 import com.stock.togetherStock.post.service.PostService;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,9 +37,17 @@ public class PostController {
     /**
      * 게시물 목록
      */
+    @PreAuthorize("permitAll()")
     @GetMapping("/post/list")
-    public String list(Model model) {
+    public String list(Model model, Principal principal) {
+
         model.addAttribute("postList", postService.postList());
+
+        if (principal != null) {
+            model.addAttribute("member", memberRepository.findByEmail(principal.getName()));
+        } else {
+            model.addAttribute("member", Optional.empty());
+        }
 
         return "/post/postList";
     }
@@ -46,6 +55,7 @@ public class PostController {
     /**
      * 게시물 작성
      */
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/post/write")
     public String write(Model model) {
 
@@ -96,6 +106,7 @@ public class PostController {
     /**
      * 게시물 수정
      */
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/post/edit/{postId}")
     public String updatePostPage(Model model, @PathVariable Long postId){
 
@@ -110,6 +121,7 @@ public class PostController {
     /**
      * 게시물 수정 입력
      */
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/post/edit/{postId}")
     public String updatePostPageProc(@PathVariable Long postId, PostDto postDto) {
 
@@ -121,6 +133,7 @@ public class PostController {
     /**
      * 게시물 삭제
      */
+    @PreAuthorize("isAuthenticated()")
     //localhost:8080/post/delete
     @GetMapping("/post/delete/{postId}")
     public String delete(@PathVariable Long postId) {

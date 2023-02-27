@@ -21,7 +21,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         HttpServletResponse response, Authentication authentication)
         throws IOException, ServletException
     {
-        setDefaultTargetUrl("/login");
+        setDefaultTargetUrl("/post/list");
 
         super.onAuthenticationSuccess(request, response, authentication);
     }

@@ -48,10 +48,10 @@ public class MemberController {
      * 회원 마이 페이지
      */
     // localhost:8080/member/detail?id=1
-    @GetMapping("/member/detail")
-    public String detail(Model model, Long id) {
+    @GetMapping("/member/detail/{memberId}")
+    public String detail(Model model, @PathVariable Long memberId) {
 
-        model.addAttribute("member", memberService.detail(id));
+        model.addAttribute("member", memberService.detail(memberId));
 
         return "/member/detail";
     }
@@ -78,7 +78,7 @@ public class MemberController {
 
         memberService.update(id, memberDto);
 
-        return "redirect:/";
+        return "redirect:/post/list";
     }
 
     /**
