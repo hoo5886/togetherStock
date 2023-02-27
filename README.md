@@ -10,3 +10,4 @@
 `Thymeleaf`
 
 ## 2. ERD
+<img width="640" alt="image" src="https://user-images.githubusercontent.com/102225706/221506085-83bc7969-2f5c-4b9c-a2b2-a622c52fbfcd.png">
