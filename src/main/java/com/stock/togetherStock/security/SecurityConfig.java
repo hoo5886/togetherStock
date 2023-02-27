@@ -43,6 +43,10 @@ public class SecurityConfig {
             .successHandler(authSuccessHandler)
             .failureHandler(failureHandler);
 
+        http.logout()
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/post/list");
+
         return http.build();
     }
 
