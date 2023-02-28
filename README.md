@@ -4,7 +4,7 @@
 
 ## 1. Skills
 ### 1.1 BackEnd
-`Java8`, `SpringBoot2.71`, `Spring security5.7.2`, `JPA`, `MySQL8.0.28`, `Junit4`
+`Java 8`, `SpringBoot 2.71`, `Spring security 5.7.2`, `JPA`, `MySQL 8.0.28`, `Junit4`
 
 ### 1.2 FrontEnd
 `Thymeleaf`
