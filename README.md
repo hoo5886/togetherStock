@@ -42,4 +42,32 @@
 - 내가 작성한 댓글인 경우에만 삭제 링크와 댓글 수정 링크를 보이도록 작성했습니다.
 
 ### 3.5 기능 설명
+#### 3.5.1 회원 기능
+
+<img width="943" alt="image" src="https://user-images.githubusercontent.com/102225706/221808686-73427598-c2b2-4e62-be07-ba2eaed9f464.png">
+
+#### 3.5.2 로그인 기능
+<img width="1000" alt="image" src="https://user-images.githubusercontent.com/102225706/221808794-64d64a0b-f18a-460a-8b8c-541d9693d7ee.png">
+
+#### 3.5.3 게시글 기능
+##### 게시글 작성
+<img width="1012" alt="image" src="https://user-images.githubusercontent.com/102225706/221808936-ea635e4e-2ea9-47f5-9276-9e1b296f02a6.png">
+
+#### 게시글 수정
+<img width="904" alt="image" src="https://user-images.githubusercontent.com/102225706/221811305-0a66d752-11a0-4237-b0aa-dfc2a554bcc9.png">
+
+#### 게시글 삭제
+<img width="904" alt="image" src="https://user-images.githubusercontent.com/102225706/221811583-7e876e73-d51b-452e-931c-e7244e7a4a81.png">
+
+
+#### 3.5.4 댓글 기능
+##### 댓글 작성
+<img width="941" alt="image" src="https://user-images.githubusercontent.com/102225706/221809013-db15d6f2-292a-410a-a4a5-87822ecaf14c.png">
+
+##### 댓글 수정
+<img width="774" alt="image" src="https://user-images.githubusercontent.com/102225706/221809160-326334e1-4b2e-43c1-b041-c510be88a27d.png">
+
+##### 댓글 삭제
+<img width="862" alt="image" src="https://user-images.githubusercontent.com/102225706/221811911-ca143e5d-8861-44ea-9df7-ce796f009ea9.png">
+
 
