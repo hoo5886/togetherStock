@@ -50,14 +50,14 @@
 - 기본적인 CRUD를 작성하였습니다.
 - 로그인을 하지 않은 사용자가 댓글을 작성할 경우, 에러를 던집니다.
 - 내가 작성한 댓글인 경우에만 삭제 링크와 댓글 수정 링크를 보이도록 작성했습니다.
-#### 3.4.1 댓글 기능
-##### 댓글 작성
+- 
+#### 3.4.1 댓글 작성
 <img width="941" alt="image" src="https://user-images.githubusercontent.com/102225706/221809013-db15d6f2-292a-410a-a4a5-87822ecaf14c.png">
 
-##### 댓글 수정
+#### 3.4.2 댓글 수정
 <img width="774" alt="image" src="https://user-images.githubusercontent.com/102225706/221809160-326334e1-4b2e-43c1-b041-c510be88a27d.png">
 
-##### 댓글 삭제
+#### 3.4.3 댓글 삭제
 <img width="862" alt="image" src="https://user-images.githubusercontent.com/102225706/221811911-ca143e5d-8861-44ea-9df7-ce796f009ea9.png">
 
 
