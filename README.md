@@ -43,11 +43,11 @@
 # 4. 트러블 슈팅
 ## 4.1 테스트 코드 작성 중 발생한 NPE
 
-### 문제
+### a. 문제
 `java.lang.NullPointerException`
-### 문제원인 분석 및 해결
+### b. 문제원인 분석 및 해결
 
-### 스택오버플로우
+### c. 스택오버플로우
 
 **찾은 해결책**
 
@@ -67,7 +67,7 @@
 공부 후 다시 작성 후 성공
 
 ## 4.2 테스트 코드 작성 중 중복회원 익셉션이 발생하지 않음
-### 문제 원인 분석.
+### a. 문제 원인 분석.
 
 - 예외 처리에 대한 기본지식 부족
 
@@ -75,7 +75,68 @@
 
 심지어 `JPA`나 `SPRING`에 대한 것들은 구글링이나 스택오버 플로우를 조금만 찾아봐도 이해가 쉽게 됐지만 예외처리 핸들링에 대한 것들은 곧잘 이해가 되지 않았다.
 
-### 해결
+### b. 해결
 
 1. **예외처리 방식에 대한 기본적인 로직 구현 강의**:  [https://www.youtube.com/watch?v=nyN4o9eXqm0&list=PLlTylS8uB2fBOi6uzvMpojFrNe7sRmlzU&index=18](https://www.youtube.com/watch?v=nyN4o9eXqm0&list=PLlTylS8uB2fBOi6uzvMpojFrNe7sRmlzU&index=18)
 2. 강의를 들은 후, 각 도메인마다 `exception` 코드를 짜고, 모든 `exception`을 한번에 처리하기 위해 `common`디렉토리에서 handler를 만들어주어 예외를 처리하였다.
+
+## 4.3 로그인 기능 테스트 코드
+### a. 문제
+```html
+java.lang.IllegalStateException: Failed to load ApplicationContext
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfig': Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.stock.togetherStock.security.handler.AuthSuccessHandler' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+	
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.stock.togetherStock.security.handler.AuthSuccessHandler' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+	
+```
+
+### b. 원인 분석
+내가 겪고 있던 문제는 Security 로그인 기능을 테스트하는 코드를 작성하나, securityConfig에서 authSuccessHandler를 bean으로 등록하지 못해서 문제가 발생.
+
+### c. 해결책
+어떻게 테스트해야하는지 감이 오질 않았으나, 해답을 발견했음.
+
+- [https://stackoverflow.com/questions/73050028/error-creating-bean-with-name-securityconfig-defined-in-file](https://stackoverflow.com/questions/73050028/error-creating-bean-with-name-securityconfig-defined-in-file)
+- [https://astrid-dm.tistory.com/536](https://astrid-dm.tistory.com/536)
+
+결국 요약하자면 문제는 설정 클래스의 필드들을 모두 로드하려면 `@SpringBootTest`를 붙여줘야 한다는 점.
+
+## 4.4 `postRepository.findAll()`의 `NPE` 에러
+### a. 문제
+```java
+@Service
+@RequiredArgsConstructor
+public class PostService {
+
+    PostRepository postRepository;
+
+    /**
+     * 게시물 목록 조회 로직
+     */
+    public List<Post> postList() {
+
+        return postRepository.findAll();
+    }
+```
+이 코드로 실제 게시물 리스트를 조회하면 NPE가 나온다. 왜그랬을까? 원인은 간단했지만 30분 정도 잡아먹었다.
+### b. 해결
+나는 `@RequiredArgsConstructor`를 통해 생성자를 자동주입했다. 그러나 위 로직의 `PostRepository`는 `final`을 적용하지 않았으므로 위 애노테이션이 제대로 동작할리가 만무하다. 그러니 제대로 주입이 되지 않았던 것이다.
+
+```java
+@Service
+@RequiredArgsConstructor
+public class PostService {
+
+    private final PostRepository postRepository;
+
+    /**
+     * 게시물 목록 조회 로직
+     */
+    public List<Post> postList() {
+
+        return postRepository.findAll();
+    }
+```
+위와 같이 `private final` 을 붙여주었다. 제대로 동작한다.
+
