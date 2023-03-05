@@ -41,7 +41,7 @@
 - 내가 작성한 댓글인 경우에만 삭제 링크와 댓글 수정 링크를 보이도록 작성했습니다.
 
 # 4. 트러블 슈팅
-## 1. 테스트 코드 작성 중 발생한 NPE
+## 4.1 테스트 코드 작성 중 발생한 NPE
 
 ### 문제
 `java.lang.NullPointerException`
@@ -65,3 +65,17 @@
 2. 테스트의 의도는 회원가입 후 실제로 데이터가 잘 들어갔는지 여부. 그래서 `given().willReturn()`를 통해 실제 존재해야할 값을 입력해주고, `memberService.create()`를 통해 만들어진 값과 비교했어야 했다.
 
 공부 후 다시 작성 후 성공
+
+## 4.2 테스트 코드 작성 중 중복회원 익셉션이 발생하지 않음
+### 문제 원인 분석.
+
+- 예외 처리에 대한 기본지식 부족
+
+지금까지 내가 막혔던 부분을 찬찬히 돌아보니, 모두 **MVC패턴**에 대한 것이었다. **스프링 MVC**에 대한 공부를 안한 것이 이렇게 바로 드러났다. 
+
+심지어 `JPA`나 `SPRING`에 대한 것들은 구글링이나 스택오버 플로우를 조금만 찾아봐도 이해가 쉽게 됐지만 예외처리 핸들링에 대한 것들은 곧잘 이해가 되지 않았다.
+
+### 해결
+
+1. **예외처리 방식에 대한 기본적인 로직 구현 강의**:  [https://www.youtube.com/watch?v=nyN4o9eXqm0&list=PLlTylS8uB2fBOi6uzvMpojFrNe7sRmlzU&index=18](https://www.youtube.com/watch?v=nyN4o9eXqm0&list=PLlTylS8uB2fBOi6uzvMpojFrNe7sRmlzU&index=18)
+2. 강의를 들은 후, 각 도메인마다 `exception` 코드를 짜고, 모든 `exception`을 한번에 처리하기 위해 `common`디렉토리에서 handler를 만들어주어 예외를 처리하였다.
