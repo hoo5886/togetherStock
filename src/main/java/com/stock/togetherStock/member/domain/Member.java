@@ -1,5 +1,7 @@
 package com.stock.togetherStock.member.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.stock.togetherStock.comment.domain.Comment;
 import com.stock.togetherStock.post.domain.Post;
 import java.time.LocalDateTime;
@@ -33,10 +35,11 @@ public class Member implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
+    @JsonProperty(access = Access.WRITE_ONLY)
+    @Column(nullable = false)
     private String password;
 
     @Column
@@ -90,28 +93,33 @@ public class Member implements UserDetails {
         return null;
     }
 
+    @JsonProperty(access = Access.WRITE_ONLY)
     @Override
     public String getUsername() {
         return this.email;
     }
 
+    @JsonProperty(access = Access.WRITE_ONLY)
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
+    @JsonProperty(access = Access.WRITE_ONLY)
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
+    @JsonProperty(access = Access.WRITE_ONLY)
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
+    @JsonProperty(access = Access.WRITE_ONLY)
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
