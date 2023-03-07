@@ -140,3 +140,21 @@ public class PostService {
 ```
 위와 같이 `private final` 을 붙여주었다. 제대로 동작한다.
 
+## 4.5 PostService 테스트코드 중 null에러 
+### a. 문제
+#### `PostServiceTest`
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/80e7b0b5-dbbb-4def-8ffb-abbca3a0348b/Untitled.png)
+`postRepository`에 `null`이 들어있다. 원래는 `repository`가 들어있어야 한다. 아래의 `memberRepository`에서 처럼말이다.
+
+#### `MemberServiceTest`
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5a9eb854-0557-4fab-b51b-4355c51eee35/Untitled.png)
+
+분명 두 테스트 클래스의 코드는 동일하다. 근데 `PostRepository`에선 `null`이 주입된다.
+
+### b. 해결
+스택오버 플로우: [https://stackoverflow.com/questions/63741787/nullpointerexception-when-mocking-repository-junit](https://stackoverflow.com/questions/63741787/nullpointerexception-when-mocking-repository-junit)
+결론: Junit4와 Junit5를 섞어서 사용했기 때문이다.
+
+JUnit 4 : `org.junit.runner.RunWith` / `org.junit.Test`
+JUnit 5 : `org.junit.jupiter.api.extension.ExtendWith` / `org.junit.jupiter.api.Test`
+JUnit5로 통일하여 문제를 해결하였다.
