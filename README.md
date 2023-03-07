@@ -143,12 +143,11 @@ public class PostService {
 ## 4.5 PostService 테스트코드 중 null에러 
 ### a. 문제
 #### `PostServiceTest`
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/80e7b0b5-dbbb-4def-8ffb-abbca3a0348b/Untitled.png)
+<img width="468" alt="image" src="https://user-images.githubusercontent.com/102225706/223382878-22ea96b5-eed3-4aec-8a20-675da2f07418.png">
 `postRepository`에 `null`이 들어있다. 원래는 `repository`가 들어있어야 한다. 아래의 `memberRepository`에서 처럼말이다.
 
 #### `MemberServiceTest`
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5a9eb854-0557-4fab-b51b-4355c51eee35/Untitled.png)
-
+<img width="531" alt="image" src="https://user-images.githubusercontent.com/102225706/223382951-d615a7c1-3950-41f4-a9bb-42ba836521dc.png">
 분명 두 테스트 클래스의 코드는 동일하다. 근데 `PostRepository`에선 `null`이 주입된다.
 
 ### b. 해결
