@@ -13,8 +13,6 @@
     <p th:text="${post.content}"></p>
     <a th:href="@{/post/delete/{postId}(postId = ${post.postId})}"
        th:if="${principal.getName().equals(post.getMember().getEmail())}">글 삭제</a>
-    <a th:href="@{/post/edit/{postId}(postId=${post.postId})}"
-       th:if="${principal.getName().equals(post.getMember().getEmail())}">수정</a>
   </div>
   <!--게시글 끝-->
   <!-- 댓글 시작-->
