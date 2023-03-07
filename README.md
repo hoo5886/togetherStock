@@ -144,14 +144,16 @@ public class PostService {
 ### a. 문제
 #### `PostServiceTest`
 <img width="468" alt="image" src="https://user-images.githubusercontent.com/102225706/223382878-22ea96b5-eed3-4aec-8a20-675da2f07418.png">
+
 `postRepository`에 `null`이 들어있다. 원래는 `repository`가 들어있어야 한다. 아래의 `memberRepository`에서 처럼말이다.
 
 #### `MemberServiceTest`
 <img width="531" alt="image" src="https://user-images.githubusercontent.com/102225706/223382951-d615a7c1-3950-41f4-a9bb-42ba836521dc.png">
+
 분명 두 테스트 클래스의 코드는 동일하다. 근데 `PostRepository`에선 `null`이 주입된다.
 
 ### b. 해결
-스택오버 플로우: [https://stackoverflow.com/questions/63741787/nullpointerexception-when-mocking-repository-junit](https://stackoverflow.com/questions/63741787/nullpointerexception-when-mocking-repository-junit)
+스택오버 플로우: [https://stackoverflow.com/questions/63741787/nullpointerexception-when-mocking-repository-junit](https://stackoverflow.com/questions/63741787/nullpointerexception-when-mocking-repository-junit)\
 결론: Junit4와 Junit5를 섞어서 사용했기 때문이다.
 
 JUnit 4 : `org.junit.runner.RunWith` / `org.junit.Test`
