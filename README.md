@@ -140,7 +140,7 @@ public class PostService {
 ```
 위와 같이 `private final` 을 붙여주었다. 제대로 동작한다.
 
-## 4.5 PostService 테스트코드 중 null에러 
+## 4.5 PostService 테스트코드 중 `postRepository`에 null이 주입되는 에러
 ### a. 문제
 #### `PostServiceTest`
 <img width="468" alt="image" src="https://user-images.githubusercontent.com/102225706/223382878-22ea96b5-eed3-4aec-8a20-675da2f07418.png">
