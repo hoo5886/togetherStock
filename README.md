@@ -156,6 +156,39 @@ public class PostService {
 스택오버 플로우: [https://stackoverflow.com/questions/63741787/nullpointerexception-when-mocking-repository-junit](https://stackoverflow.com/questions/63741787/nullpointerexception-when-mocking-repository-junit)\
 결론: Junit4와 Junit5를 섞어서 사용했기 때문이다.
 
-JUnit 4 : `org.junit.runner.RunWith` / `org.junit.Test`\n
-JUnit 5 : `org.junit.jupiter.api.extension.ExtendWith` / `org.junit.jupiter.api.Test`\n
+JUnit 4 : `org.junit.runner.RunWith` / `org.junit.Test` \
+JUnit 5 : `org.junit.jupiter.api.extension.ExtendWith` / `org.junit.jupiter.api.Test` \
 JUnit5로 통일하여 문제를 해결하였다.
+
+## 4.6 object references an unsaved transient instance - save the transient instance before flushing
+### a. 문제
+엔티티 간의 매핑하고나서, `cascade`를 제대로 설정해주지 않아서 생긴 문제이다.
+```html
+org.hibernate.TransientPropertyValueException: 
+	object references an unsaved transient instance - save the transient instance before flushing : com.stock.togetherStock.comment.domain.Comment.member -> com.stock.togetherStock.member.domain.Member; 
+	nested exception is java.lang.IllegalStateException: org.hibernate.TransientPropertyValueException: 
+		object references an unsaved transient instance - save the transient instance before flushing : com.stock.togetherStock.comment.domain.Comment.member -> com.stock.togetherStock.member.domain.Member
+			org.springframework.dao.InvalidDataAccessApiUsageException: 
+				org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : com.stock.togetherStock.comment.domain.Comment.member -> com.stock.togetherStock.member.domain.Member; 
+					nested exception is java.lang.IllegalStateException: 
+						org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : 
+							com.stock.togetherStock.comment.domain.Comment.member -> com.stock.togetherStock.member.domain.Member
+```
+예를 들어 `comment DB`는 `member DB`와 `post DB`를 참조하고 있기 때문에, 한 게시물에 댓글을 하나 작성하면, `comment DB`에는 `member`의 `ID`와 `post`의 `ID` 데이터를 같이 갖게 된다.
+
+허나 나는 영속성 전이를 설정했음에도 같은 에러가 계속 났다. 더군다나 에러 뿐만 아니라 DB에 들어간 데이터를 유심히 살펴보니 등록일 컬럼이 null인 경우가 있었다. 도메인과 dto를 다시 살펴보고나니, 
+
+도메인의 `toDto()`와 dto의 `toEntity()`에서 모든 데이터가 형변환하는 것이 아니라 id값, post 등 일부 데이터만 형변환해서 넘겨주었다. 등록일 같은 경우는 아예 넘겨줄 때 빼먹었다.
+
+다시 정리해보자면,
+1. 영속성 전이를 제대로 설정해주지 않아서 에러가 발생함.
+2. 영속성 전이를 설정해줬으나, 에러가 해결되지 않음.
+
+### b. 해결
+<img width="529" alt="image" src="https://user-images.githubusercontent.com/102225706/223385186-c0e3f931-4421-4c30-962b-58b914431b2a.png">
+도메인으로 데이터를 직접 받으면 유지보수가 어렵다는 얘기를 모든 사람들이 강조하였다. 그래서 중간에 Dto 클래스를 매개하여 데이터를 전달한다.
+그래서 위 사진처럼 도메인을 dto로 변환해주는 메소드와 dto를 도메인으로 변환해주는 메소드를 만들었다.
+
+그러나 나는 이 이 메소드에서 데이터를 변환할 때 일부 중요데이터만 변환했을 뿐, 모든 데이터를 변환하지 않았다. 에러의 발생은 여기서 시작이었다.
+이 메소드에서 모든 데이터들을 변환하도록 설정한 뒤 에러는 해결되었다.
+
