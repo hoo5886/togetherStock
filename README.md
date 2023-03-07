@@ -156,6 +156,6 @@ public class PostService {
 스택오버 플로우: [https://stackoverflow.com/questions/63741787/nullpointerexception-when-mocking-repository-junit](https://stackoverflow.com/questions/63741787/nullpointerexception-when-mocking-repository-junit)\
 결론: Junit4와 Junit5를 섞어서 사용했기 때문이다.
 
-JUnit 4 : `org.junit.runner.RunWith` / `org.junit.Test`
-JUnit 5 : `org.junit.jupiter.api.extension.ExtendWith` / `org.junit.jupiter.api.Test`
+JUnit 4 : `org.junit.runner.RunWith` / `org.junit.Test`\n
+JUnit 5 : `org.junit.jupiter.api.extension.ExtendWith` / `org.junit.jupiter.api.Test`\n
 JUnit5로 통일하여 문제를 해결하였다.
